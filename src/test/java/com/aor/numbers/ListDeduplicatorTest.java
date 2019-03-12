@@ -2,6 +2,7 @@ package com.aor.numbers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +27,27 @@ public class ListDeduplicatorTest {
         expected.add(1);
         expected.add(2);
         expected.add(4);
-        expected.add(5);
     }
 
 
     @Test
     public void deduplicate() {
         ListDeduplicator deduplicator = new ListDeduplicator(list);
-        List<Integer> distinct = deduplicator.deduplicate();
+        class stubListSorter implements IListSorter{
+            @Override
+            public List<Integer> sort() {
+                List<Integer> list= new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(2);
+                list.add(4);
+                return list;
+            }
+        }
+        List<Integer> distinct = deduplicator.deduplicate(new stubListSorter());
 
         assertEquals(expected, distinct);
+
+
     }
 }

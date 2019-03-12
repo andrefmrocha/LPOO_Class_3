@@ -1,5 +1,6 @@
 package com.aor.numbers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,9 +59,8 @@ public class ListAggregator {
      * Counts the number of distinct numbers in a list.
      * @return The number of distinct numbers.
      */
-    public int distinct() {
-        ListDeduplicator deduplicator = new ListDeduplicator(list);
-        List<Integer> distinct = deduplicator.deduplicate();
+    public int distinct(IListDeduplicator list) {
+        List<Integer> distinct = list.deduplicate(new ListSorter(this.list));
 
         return distinct.size();
     }

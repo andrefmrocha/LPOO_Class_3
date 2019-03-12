@@ -36,5 +36,19 @@ public class ListSorterTest {
         List<Integer> sorted = sorter.sort();
 
         assertEquals(expected, sorted);
+
+        List<Integer> bugList= new ArrayList<>();
+        bugList.add(1);
+        bugList.add(2);
+        bugList.add(4);
+        bugList.add(2);
+        List<Integer> bugExpected = new ArrayList<>();
+        bugExpected.add(1);
+        bugExpected.add(2);
+        bugExpected.add(2);
+        bugExpected.add(4);
+
+        ListSorter bugSorter = new ListSorter(bugList);
+        assertEquals(bugExpected, bugSorter.sort());
     }
 }

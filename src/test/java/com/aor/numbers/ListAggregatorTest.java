@@ -2,11 +2,15 @@ package com.aor.numbers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 
 public class ListAggregatorTest {
 
@@ -63,8 +67,32 @@ public class ListAggregatorTest {
     public void distinct() {
         ListAggregator aggregator = new ListAggregator(list);
 
-        int distinct = aggregator.distinct();
+        class duplicatorStub implements IListDeduplicator{
+
+            List<Integer> list;
+            duplicatorStub(int size){
+                this.list = Arrays.asList(new Integer[size]);
+            }
+
+            @Override
+            public List<Integer> deduplicate(IListSorter sortingList) {
+                return this.list;
+            }
+        }
+        int distinct = aggregator.distinct(new duplicatorStub(4));
 
         assertEquals(4, distinct);
+
+        assertEquals(3, aggregator.distinct(new duplicatorStub(3)));
+
+        List<Integer> mockList = new ArrayList<>();
+        mockList.add(1);
+        mockList.add(2);
+        mockList.add(2);
+        IListDeduplicator mockDedup = Mockito.mock(IListDeduplicator.class);
+
+        Mockito.when(mockDedup.deduplicate(any(IListSorter.class))).thenReturn(mockList);
+
+        assertEquals(3, aggregator.distinct(mockDedup));
     }
 }
