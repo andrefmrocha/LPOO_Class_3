@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 public class ListAggregatorTest {
 
-    List<Integer> list;
+    List<Integer> list = new ArrayList<>();
 
     @Before
-    private void prepareList(){
+    public void prepareList(){
         this.list.clear();
         list.add(1);
         list.add(2);
@@ -37,6 +37,17 @@ public class ListAggregatorTest {
         int max = aggregator.max();
 
         assertEquals(5, max);
+
+        List<Integer> bugTest = new ArrayList<>();
+        bugTest.add(-1);
+        bugTest.add(-4);
+        bugTest.add(-5);
+
+        ListAggregator bugAggregator = new ListAggregator(bugTest);
+
+        int bugMax = bugAggregator.max();
+
+        assertEquals(-1, bugMax);
     }
 
     @Test
